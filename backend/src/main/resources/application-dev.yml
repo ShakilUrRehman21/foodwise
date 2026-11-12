@@ -1,0 +1,9 @@
+# Local development: backend-issued dev tokens (no Clerk account needed) and Swagger UI at /api/docs.
+foodwise:
+  auth:
+    mode: ${AUTH_MODE:DEV}
+
+logging:
+  level:
+    com.foodwise: DEBUG
+    org.hibernate.SQL: WARN

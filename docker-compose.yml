@@ -1,0 +1,43 @@
+# One-command local stack: PostgreSQL 16 + Spring Boot API (with Tesseract OCR) + Next.js web.
+#   docker compose up --build      -> http://localhost:3000
+# Uses local DEV sign-in (no Clerk keys needed). See README for Clerk/production settings.
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: foodwise
+      POSTGRES_USER: foodwise
+      POSTGRES_PASSWORD: foodwise
+    ports: ["5432:5432"]
+    volumes: [pgdata:/var/lib/postgresql/data]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U foodwise"]
+      interval: 5s
+      retries: 10
+
+  api:
+    build: ./backend
+    depends_on:
+      db: { condition: service_healthy }
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      AUTH_MODE: DEV
+      DATABASE_URL: jdbc:postgresql://db:5432/foodwise
+      DATABASE_USERNAME: foodwise
+      DATABASE_PASSWORD: foodwise
+      FRONTEND_URL: http://localhost:3000
+      TESSDATA_PATH: /usr/share/tesseract-ocr/5/tessdata
+    ports: ["8080:8080"]
+    volumes: [uploads:/data/uploads]
+
+  web:
+    build:
+      context: ./frontend
+      args:
+        API_PROXY_TARGET: http://api:8080
+    depends_on: [api]
+    ports: ["3000:3000"]
+
+volumes:
+  pgdata:
+  uploads:

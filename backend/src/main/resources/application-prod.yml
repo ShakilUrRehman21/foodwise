@@ -1,0 +1,17 @@
+# Production: Clerk auth is mandatory (startup fails with DEV mode), API docs disabled, JSON logs.
+foodwise:
+  auth:
+    mode: CLERK
+
+springdoc:
+  api-docs:
+    enabled: false
+  swagger-ui:
+    enabled: false
+
+logging:
+  structured:
+    format:
+      console: ecs
+  level:
+    root: INFO

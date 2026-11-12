@@ -1,0 +1,131 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    /* Brand Core */
+    --primary: #668568;
+    --primary-hover: #556F57;
+    --primary-light: #EEF3EE;
+    --primary-foreground: #FFFFFF;
+
+    /* Surfaces & Backgrounds */
+    --background: #F8F7F2;
+    --foreground: #26372C;
+    --surface: #FFFFFF;
+    --surface-subtle: #F1EFEA;
+    --surface-elevated: #FFFFFF;
+
+    /* Cards & Popovers */
+    --card: #FFFFFF;
+    --card-foreground: #26372C;
+    --popover: #FFFFFF;
+    --popover-foreground: #26372C;
+
+    /* Secondary & Muted */
+    --secondary: #EEF3EE;
+    --secondary-foreground: #26372C;
+    --muted: #F1EFEA;
+    --muted-foreground: #788278;
+
+    /* Accent & Destructive */
+    --accent: #EEF3EE;
+    --accent-foreground: #26372C;
+    --destructive: #D76F65;
+    --destructive-foreground: #FFFFFF;
+
+    /* Borders & Inputs */
+    --border: #E6E3DA;
+    --input: #E6E3DA;
+    --ring: #668568;
+    --radius: 0.625rem;
+
+    /* Typography tokens */
+    --text-primary: #26372C;
+    --text-secondary: #788278;
+    --text-inverse: #FFFFFF;
+
+    /* Border tokens */
+    --border-subtle: #E6E3DA;
+    --border-focus: #668568;
+
+    /* Semantic Expiry & Health Accents */
+    --badge-fresh-bg: #EAF3EC;
+    --badge-fresh-text: #2D6B3C;
+    --badge-warning-bg: #FDF4E7;
+    --badge-warning-text: #B47823;
+    --warning: #E9AC55;
+    --badge-urgent-bg: #FCEDE8;
+    --badge-urgent-text: #C04334;
+    --danger: #D76F65;
+    --badge-expired-bg: #F2F1ED;
+    --badge-expired-text: #8C8A84;
+
+    /* Font stack */
+    --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+}
+
+@theme {
+  --color-primary: #668568;
+  --color-primary-hover: #556F57;
+  --color-primary-light: #EEF3EE;
+  --color-primary-foreground: #FFFFFF;
+
+  --color-background: #F8F7F2;
+  --color-foreground: #26372C;
+
+  --color-surface: #FFFFFF;
+  --color-surface-subtle: #F1EFEA;
+  --color-surface-elevated: #FFFFFF;
+
+  --color-card: #FFFFFF;
+  --color-card-foreground: #26372C;
+
+  --color-popover: #FFFFFF;
+  --color-popover-foreground: #26372C;
+
+  --color-secondary: #EEF3EE;
+  --color-secondary-foreground: #26372C;
+
+  --color-muted: #F1EFEA;
+  --color-muted-foreground: #788278;
+
+  --color-accent: #EEF3EE;
+  --color-accent-foreground: #26372C;
+
+  --color-destructive: #D76F65;
+  --color-destructive-foreground: #FFFFFF;
+
+  --color-border: #E6E3DA;
+  --color-input: #E6E3DA;
+  --color-ring: #668568;
+
+  --color-text-primary: #26372C;
+  --color-text-secondary: #788278;
+  --color-text-inverse: #FFFFFF;
+
+  --color-border-subtle: #E6E3DA;
+  --color-border-focus: #668568;
+
+  --color-badge-fresh-bg: #EAF3EC;
+  --color-badge-fresh-text: #2D6B3C;
+  --color-badge-warning-bg: #FDF4E7;
+  --color-badge-warning-text: #B47823;
+  --color-warning: #E9AC55;
+  --color-badge-urgent-bg: #FCEDE8;
+  --color-badge-urgent-text: #C04334;
+  --color-danger: #D76F65;
+  --color-badge-expired-bg: #F2F1ED;
+  --color-badge-expired-text: #8C8A84;
+
+  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+}
