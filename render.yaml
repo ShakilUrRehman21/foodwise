@@ -1,13 +1,6 @@
-# Render Blueprint: Postgres + Spring Boot API + Next.js web.
+# Render Blueprint: Spring Boot API + Next.js web. The database is external (e.g. Neon free tier).
 # Deploy: Render dashboard -> New -> Blueprint -> pick this repo. Fill in the values marked `sync: false`.
 # See docs/DEPLOYMENT.md.
-databases:
-  - name: foodwise-db
-    databaseName: foodwise
-    user: foodwise
-    plan: free
-    region: singapore
-
 services:
   - type: web
     name: foodwise-api
@@ -22,16 +15,13 @@ services:
         value: prod
       - key: JAVA_OPTS
         value: "-XX:+UseG1GC -XX:MaxRAMPercentage=70 -XX:+ExitOnOutOfMemoryError"
-      - key: DB_HOST
-        fromDatabase: { name: foodwise-db, property: host }
-      - key: DB_PORT
-        fromDatabase: { name: foodwise-db, property: port }
-      - key: DB_NAME
-        fromDatabase: { name: foodwise-db, property: database }
-      - key: DB_USER
-        fromDatabase: { name: foodwise-db, property: user }
-      - key: DB_PASSWORD
-        fromDatabase: { name: foodwise-db, property: password }
+      # External Postgres (e.g. Neon): jdbc:postgresql://<host>/<db>?sslmode=require
+      - key: DATABASE_URL
+        sync: false
+      - key: DATABASE_USERNAME
+        sync: false
+      - key: DATABASE_PASSWORD
+        sync: false
       - key: TESSDATA_PATH
         value: /usr/share/tesseract-ocr/5/tessdata
       - key: AUTH_MODE
