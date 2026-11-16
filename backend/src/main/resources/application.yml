@@ -5,9 +5,10 @@ spring:
   profiles:
     default: dev
   datasource:
-    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/foodwise}
-    username: ${DATABASE_USERNAME:foodwise}
-    password: ${DATABASE_PASSWORD:foodwise}
+    # A full JDBC URL, or host/port/name parts (managed hosts such as Render provide the parts).
+    url: ${DATABASE_URL:jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:foodwise}}
+    username: ${DATABASE_USERNAME:${DB_USER:foodwise}}
+    password: ${DATABASE_PASSWORD:${DB_PASSWORD:foodwise}}
     hikari:
       maximum-pool-size: ${DATABASE_POOL_SIZE:10}
       connection-timeout: 10000

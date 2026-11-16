@@ -1,5 +1,7 @@
 # FoodWise
 
+[![CI](https://github.com/ShakilUrRehman21/foodwise/actions/workflows/ci.yml/badge.svg)](https://github.com/ShakilUrRehman21/foodwise/actions/workflows/ci.yml)
+
 **Know what you have. Waste less.**
 
 FoodWise is a kitchen companion for Indian households. It tracks groceries and leftovers, shows what is about to expire, suggests recipes that use up that food first, keeps a shared shopping list, and shows how many rupees were spent and wasted.
@@ -97,6 +99,7 @@ The `scripts/` folder has scripts you can double-click instead of typing command
 | `3-start-app.bat` | Runs `docker compose up --build -d`, waits for the health check, and opens the app |
 | `4-verify-and-restart.bat` | Runs the tests, then rebuilds and restarts the app |
 | `5-stop-app.bat` | Stops the containers and Docker Desktop |
+| `run-e2e.bat` | Installs Playwright, starts the app and runs the end-to-end tests |
 
 ## Local development
 
@@ -156,6 +159,26 @@ To check the frontend:
 ```bash
 cd frontend && npm run typecheck && npm run lint && npm run build
 ```
+
+End-to-end tests (Playwright) run against a running stack (`docker compose up -d`, or `E2E_BASE_URL` for another URL):
+
+```bash
+cd frontend
+npx playwright install chromium   # first time only
+npm run test:e2e
+```
+
+They cover sign-up → onboarding → adding and discarding food, cooking a recipe (and refusing when stock is short),
+shopping list → inventory, and kitchen isolation. On Windows, `scripts/run-e2e.bat` does all of it.
+
+### Continuous integration
+
+`.github/workflows/ci.yml` runs on every push and pull request: backend tests, frontend typecheck/lint/build, then
+the end-to-end suite against the full Docker Compose stack.
+
+## Deployment
+
+`render.yaml` deploys Postgres, the API and the web app to Render in one step. See [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md).
 
 ## Authentication
 

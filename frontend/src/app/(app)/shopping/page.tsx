@@ -2,7 +2,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { PackageCheck, ShoppingCart, Sparkles, Trash2 } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { CatalogCombobox } from "@/components/features/catalog-combobox";
 import { ErrorState, ListSkeleton, PageHeader } from "@/components/shared/states";
 import { Badge } from "@/components/ui/badge";
@@ -29,19 +29,25 @@ interface ImportRow {
 }
 
 function ImportDialog({ list, open, onOpenChange }: { list: ShoppingList; open: boolean; onOpenChange: (o: boolean) => void }) {
-  const checked = list.items.filter((i) => i.checked);
   const [rows, setRows] = useState<ImportRow[]>([]);
   const [store, setStore] = useState("");
-  const init = () =>
+  // Build the rows each time the dialog opens (it is opened by the parent, so onOpenChange never fires for opening).
+  useEffect(() => {
+    if (!open) return;
     setRows(
-      checked.map((i) => ({
-        itemId: i.id,
-        name: i.name,
-        storageLocation: i.suggestedLocation,
-        expiryDate: i.shelfLifeDays !== null ? addDays(isoDate(), i.shelfLifeDays) : "",
-        costInr: i.estimatedCostInr !== null ? String(i.estimatedCostInr) : "",
-      })),
+      list.items
+        .filter((i) => i.checked)
+        .map((i) => ({
+          itemId: i.id,
+          name: i.name,
+          storageLocation: i.suggestedLocation,
+          expiryDate: i.shelfLifeDays !== null ? addDays(isoDate(), i.shelfLifeDays) : "",
+          costInr: i.estimatedCostInr !== null ? String(i.estimatedCostInr) : "",
+        })),
     );
+    // Only on open: later list refetches must not wipe dates the user has typed.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open]);
   const doImport = useKitchenMutation(
     (kid, _: void) =>
       shoppingApi.importToInventory(kid, list.id, {
@@ -55,10 +61,7 @@ function ImportDialog({ list, open, onOpenChange }: { list: ShoppingList; open: 
   return (
     <Dialog
       open={open}
-      onOpenChange={(o) => {
-        if (o) init();
-        onOpenChange(o);
-      }}
+      onOpenChange={onOpenChange}
     >
       <DialogContent className="sm:max-w-2xl">
         <DialogHeader>

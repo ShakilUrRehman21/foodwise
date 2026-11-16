@@ -1,0 +1,68 @@
+# Render Blueprint: Postgres + Spring Boot API + Next.js web.
+# Deploy: Render dashboard -> New -> Blueprint -> pick this repo. Fill in the values marked `sync: false`.
+# See docs/DEPLOYMENT.md.
+databases:
+  - name: foodwise-db
+    databaseName: foodwise
+    user: foodwise
+    plan: free
+    region: singapore
+
+services:
+  - type: web
+    name: foodwise-api
+    runtime: docker
+    rootDir: backend
+    dockerfilePath: ./Dockerfile
+    plan: free
+    region: singapore
+    healthCheckPath: /api/v1/health
+    envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: prod
+      - key: JAVA_OPTS
+        value: "-XX:+UseG1GC -XX:MaxRAMPercentage=70 -XX:+ExitOnOutOfMemoryError"
+      - key: DB_HOST
+        fromDatabase: { name: foodwise-db, property: host }
+      - key: DB_PORT
+        fromDatabase: { name: foodwise-db, property: port }
+      - key: DB_NAME
+        fromDatabase: { name: foodwise-db, property: database }
+      - key: DB_USER
+        fromDatabase: { name: foodwise-db, property: user }
+      - key: DB_PASSWORD
+        fromDatabase: { name: foodwise-db, property: password }
+      - key: TESSDATA_PATH
+        value: /usr/share/tesseract-ocr/5/tessdata
+      - key: AUTH_MODE
+        value: CLERK
+      - key: FRONTEND_URL
+        sync: false   # e.g. https://foodwise-web.onrender.com
+      - key: CLERK_JWKS_URI
+        sync: false
+      - key: CLERK_ISSUER
+        sync: false
+      - key: CLERK_AUTHORIZED_PARTIES
+        sync: false   # the web URL, e.g. https://foodwise-web.onrender.com
+      - key: CLERK_WEBHOOK_SECRET
+        sync: false
+      - key: CLERK_SECRET_KEY
+        sync: false
+
+  - type: web
+    name: foodwise-web
+    runtime: docker
+    rootDir: frontend
+    dockerfilePath: ./Dockerfile
+    plan: free
+    region: singapore
+    envVars:
+      - key: PORT
+        value: "3000"
+      # Read at build time: where /api/* is proxied. Change if Render gives the API a different URL.
+      - key: API_PROXY_TARGET
+        value: https://foodwise-api.onrender.com
+      - key: NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
+        sync: false
+      - key: CLERK_SECRET_KEY
+        sync: false
