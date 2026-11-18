@@ -64,6 +64,7 @@ public class SecurityConfig {
                 .logout(l -> l.disable())
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll();
+                    auth.requestMatchers(HttpMethod.GET, "/health").permitAll();
                     auth.requestMatchers(HttpMethod.GET, "/api/v1/health", "/api/v1/health/**").permitAll();
                     auth.requestMatchers(HttpMethod.POST, "/api/webhooks/clerk").permitAll();
                     auth.requestMatchers("/api/docs", "/api/docs/**", "/swagger-ui/**").permitAll();

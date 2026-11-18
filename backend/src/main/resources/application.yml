@@ -40,6 +40,7 @@ spring:
 
 server:
   port: ${PORT:8080}
+  address: 0.0.0.0
   shutdown: graceful
   forward-headers-strategy: framework
   error:
